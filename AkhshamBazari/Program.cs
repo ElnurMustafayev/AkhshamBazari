@@ -1,8 +1,13 @@
-﻿using System.Net;
+﻿using System.Data.Common;
+using System.Data.SqlClient;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 using AkhshamBazari.Models;
+using Dapper;
 
+
+const string connectionString = "Server=localhost;Database=AkhshamBazariDb;User Id=sa;Password=Admin9264!!;";
 HttpListener httpListener = new HttpListener();
 
 const int port = 8080;
@@ -49,6 +54,7 @@ while (true)
 
     var endpointItems = context.Request.RawUrl?.Split("/", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
+    // http://localhost:8080/
     if (endpointItems == null || endpointItems.Length == 0)
     {
         // home page
@@ -62,31 +68,12 @@ while (true)
 
     switch (endpointItems[0].ToLower())
     {
+        // http://localhost:8080/products
         case "products":
             if (context.Request.HttpMethod == HttpMethod.Get.ToString())
             {
-                var products = new List<Product> {
-                    new Product {
-                        Id = 1,
-                        Name = "IPhone 15",
-                        Price = 1800,
-                    },
-                    new Product {
-                        Id = 2,
-                        Name = "Tv",
-                        Price = null,
-                    },
-                    new Product {
-                        Id = 3,
-                        Name = null,
-                        Price = 5000,
-                    },
-                    new Product {
-                        Id = 4,
-                        Name = "Bob",
-                        Price = 90000,
-                    }
-                };
+                using var connection = new SqlConnection(connectionString);
+                var products = await connection.QueryAsync<Product>("select * from Products");
 
                 var productsHtml = GetHtml(products);
                 await writer.WriteLineAsync(productsHtml);
@@ -98,6 +85,10 @@ while (true)
 
                 context.Response.StatusCode = (int)HttpStatusCode.OK;
             }
+            else {
+                context.Response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
+            }
+
 
             break;
     }
