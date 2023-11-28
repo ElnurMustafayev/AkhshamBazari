@@ -5,7 +5,7 @@ using System.Net;
 using System.Text.Json;
 using AkhshamBazari.Controllers.Base;
 using AkhshamBazari.Models;
-using AkhshamBazari.Services;
+using AkhshamBazari.Extensions;
 using Dapper;
 
 public class ProductController : ControllerBase {
@@ -22,13 +22,7 @@ public class ProductController : ControllerBase {
         await writer.WriteLineAsync(productsHtml);
         context.Response.ContentType = "text/html";
 
-        // var productsJson = JsonSerializer.Serialize(products);
-        // await writer.WriteLineAsync(productsJson);
-        // context.Response.ContentType = "application/json";
-
         context.Response.StatusCode = (int)HttpStatusCode.OK;
-
-        writer.Dispose();
     }
 
     public async Task PostProductAsync(HttpListenerContext context)
