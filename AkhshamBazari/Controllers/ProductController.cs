@@ -7,10 +7,13 @@ using AkhshamBazari.Controllers.Base;
 using AkhshamBazari.Models;
 using AkhshamBazari.Extensions;
 using Dapper;
+using AkhshamBazari.Attributes;
 
-public class ProductController : ControllerBase {
+public class ProductController : ControllerBase
+{
     private const string ConnectionString = "Server=localhost;Database=AkhshamBazariDb;User Id=sa;Password=Admin9264!!;";
 
+    [HttpGet("GetAll")]
     public async Task GetProductsAsync(HttpListenerContext context)
     {
         using var writer = new StreamWriter(context.Response.OutputStream);
@@ -25,6 +28,38 @@ public class ProductController : ControllerBase {
         context.Response.StatusCode = (int)HttpStatusCode.OK;
     }
 
+    [HttpGet("GetById")]
+    public async Task GetProductByIdAsync(HttpListenerContext context)
+    {
+        var productIdToGetObj = context.Request.QueryString["id"];
+
+        if (productIdToGetObj == null || int.TryParse(productIdToGetObj, out int productIdToGet) == false)
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            return;
+        }
+
+        using var connection = new SqlConnection(ConnectionString);
+        var product = await connection.QueryFirstOrDefaultAsync<Product>(
+            sql: "select top 1 * from Products where Id = @Id",
+            param: new { Id = productIdToGet });
+
+        if (product is null)
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            return;
+        }
+
+        using var writer = new StreamWriter(context.Response.OutputStream);
+        await writer.WriteLineAsync(JsonSerializer.Serialize(product));
+
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int)HttpStatusCode.OK;
+    }
+
+
+
+    [HttpPost("Create")]
     public async Task PostProductAsync(HttpListenerContext context)
     {
         using var reader = new StreamReader(context.Request.InputStream);
@@ -51,6 +86,7 @@ public class ProductController : ControllerBase {
         context.Response.StatusCode = (int)HttpStatusCode.Created;
     }
 
+    [HttpDelete]
     public async Task DeleteProductAsync(HttpListenerContext context)
     {
         var productIdToDeleteObj = context.Request.QueryString["id"];
@@ -79,6 +115,7 @@ public class ProductController : ControllerBase {
         context.Response.StatusCode = (int)HttpStatusCode.OK;
     }
 
+    [HttpPut]
     public async Task PutProductAsync(HttpListenerContext context)
     {
         var productIdToUpdateObj = context.Request.QueryString["id"];

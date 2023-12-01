@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Reflection;
+using AkhshamBazari.Attributes.Base;
 using AkhshamBazari.Controllers;
 using AkhshamBazari.Controllers.Base;
 
@@ -41,9 +42,36 @@ while (true)
     }
 
     // get controller's endpoint method
+    string normalizedRequestHttpMethod = context.Request.HttpMethod.ToLower(); // GET POST PUT DELETE
+
     var controllerMethod = controllerType
         .GetMethods()
-        .FirstOrDefault(m => m.Name.ToLower().Contains(context.Request.HttpMethod.ToLower()));
+        .FirstOrDefault(m => {
+            return m.GetCustomAttributes()
+                .Any(attr => {
+                    if(attr is HttpAttribute httpAttribute) {
+                        bool isHttpMethodCorrect = httpAttribute.MethodType.Method.ToLower() == normalizedRequestHttpMethod;
+
+                        if(isHttpMethodCorrect) {
+                            if(endpointItems.Length == 1 && httpAttribute.NormalizedRouting == null)
+                                return true;
+
+                            else if(endpointItems.Length > 1) {
+                                if(httpAttribute.NormalizedRouting == null)
+                                    return false;
+                                else {
+                                    var expectedEndpoint = string.Join('/', endpointItems[1..]).ToLower();
+                                    var actualEndpoint = httpAttribute.NormalizedRouting;
+
+                                    return actualEndpoint == expectedEndpoint;
+                                }
+                            }
+                        }
+                    }
+
+                    return false;
+                });
+        });
 
     if (controllerMethod == null)
     {

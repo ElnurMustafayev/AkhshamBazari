@@ -1,10 +1,12 @@
 namespace AkhshamBazari.Controllers;
 
 using System.Net;
+using AkhshamBazari.Attributes;
 using AkhshamBazari.Controllers.Base;
 
 public class HomeController : ControllerBase
 {
+    [HttpGet]
     public async Task HomePageAsync(HttpListenerContext context)
     {
         using var writer = new StreamWriter(context.Response.OutputStream);
