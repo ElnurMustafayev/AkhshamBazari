@@ -23,7 +23,9 @@ while (true)
 
     if (endpointItems == null || endpointItems.Any() == false)
     {
-        await new HomeController().HomePageAsync(context);
+        await new HomeController(){
+            HttpContext = context,
+        }.HomePageAsync();
         context.Response.Close();
         continue;
     }
@@ -81,7 +83,8 @@ while (true)
     }
 
     // call endpoint method
-    var controller = Activator.CreateInstance(controllerType) as ControllerBase;
+    var controller = (Activator.CreateInstance(controllerType) as ControllerBase)!;
+    controller.HttpContext = context;
     var methodCall = controllerMethod.Invoke(controller, parameters: new[] { context });
 
     // if endpoint method is async -> wait it synchronously

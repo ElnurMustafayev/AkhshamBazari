@@ -5,8 +5,8 @@ using System.Net;
 using System.Text.Json;
 using AkhshamBazari.Controllers.Base;
 using AkhshamBazari.Models;
-using AkhshamBazari.Extensions;
 using Dapper;
+using AkhshamBazari.Extensions;
 using AkhshamBazari.Attributes;
 
 public class ProductController : ControllerBase
@@ -14,28 +14,28 @@ public class ProductController : ControllerBase
     private const string ConnectionString = "Server=localhost;Database=AkhshamBazariDb;User Id=sa;Password=Admin9264!!;";
 
     [HttpGet("GetAll")]
-    public async Task GetProductsAsync(HttpListenerContext context)
+    public async Task GetProductsAsync()
     {
-        using var writer = new StreamWriter(context.Response.OutputStream);
+        using var writer = new StreamWriter(base.HttpContext.Response.OutputStream);
 
         using var connection = new SqlConnection(ConnectionString);
         var products = await connection.QueryAsync<Product>("select * from Products");
 
         var productsHtml = products.GetHtml();
         await writer.WriteLineAsync(productsHtml);
-        context.Response.ContentType = "text/html";
+        base.HttpContext.Response.ContentType = "text/html";
 
-        context.Response.StatusCode = (int)HttpStatusCode.OK;
+        base.HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
     }
 
     [HttpGet("GetById")]
-    public async Task GetProductByIdAsync(HttpListenerContext context)
+    public async Task GetProductByIdAsync()
     {
-        var productIdToGetObj = context.Request.QueryString["id"];
+        var productIdToGetObj = base.HttpContext.Request.QueryString["id"];
 
         if (productIdToGetObj == null || int.TryParse(productIdToGetObj, out int productIdToGet) == false)
         {
-            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            base.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             return;
         }
 
@@ -46,30 +46,30 @@ public class ProductController : ControllerBase
 
         if (product is null)
         {
-            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            base.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
             return;
         }
 
-        using var writer = new StreamWriter(context.Response.OutputStream);
+        using var writer = new StreamWriter(base.HttpContext.Response.OutputStream);
         await writer.WriteLineAsync(JsonSerializer.Serialize(product));
 
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)HttpStatusCode.OK;
+        base.HttpContext.Response.ContentType = "application/json";
+        base.HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
     }
 
 
 
     [HttpPost("Create")]
-    public async Task PostProductAsync(HttpListenerContext context)
+    public async Task PostProductAsync()
     {
-        using var reader = new StreamReader(context.Request.InputStream);
+        using var reader = new StreamReader(base.HttpContext.Request.InputStream);
         var json = await reader.ReadToEndAsync();
 
         var newProduct = JsonSerializer.Deserialize<Product>(json);
 
         if (newProduct == null || newProduct.Price == null || string.IsNullOrWhiteSpace(newProduct.Name))
         {
-            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            base.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             return;
         }
 
@@ -83,17 +83,17 @@ public class ProductController : ControllerBase
                 newProduct.Price,
             });
 
-        context.Response.StatusCode = (int)HttpStatusCode.Created;
+        base.HttpContext.Response.StatusCode = (int)HttpStatusCode.Created;
     }
 
     [HttpDelete]
-    public async Task DeleteProductAsync(HttpListenerContext context)
+    public async Task DeleteProductAsync()
     {
-        var productIdToDeleteObj = context.Request.QueryString["id"];
+        var productIdToDeleteObj = base.HttpContext.Request.QueryString["id"];
 
         if (productIdToDeleteObj == null || int.TryParse(productIdToDeleteObj, out int productIdToDelete) == false)
         {
-            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            base.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             return;
         }
 
@@ -108,32 +108,32 @@ public class ProductController : ControllerBase
 
         if (deletedRowsCount == 0)
         {
-            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            base.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
             return;
         }
 
-        context.Response.StatusCode = (int)HttpStatusCode.OK;
+        base.HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
     }
 
     [HttpPut]
-    public async Task PutProductAsync(HttpListenerContext context)
+    public async Task PutProductAsync()
     {
-        var productIdToUpdateObj = context.Request.QueryString["id"];
+        var productIdToUpdateObj = base.HttpContext.Request.QueryString["id"];
 
         if (productIdToUpdateObj == null || int.TryParse(productIdToUpdateObj, out int productIdToUpdate) == false)
         {
-            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            base.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             return;
         }
 
-        using var reader = new StreamReader(context.Request.InputStream);
+        using var reader = new StreamReader(base.HttpContext.Request.InputStream);
         var json = await reader.ReadToEndAsync();
 
         var productToUpdate = JsonSerializer.Deserialize<Product>(json);
 
         if (productToUpdate == null || productToUpdate.Price == null || string.IsNullOrEmpty(productToUpdate.Name))
         {
-            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            base.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             return;
         }
 
@@ -151,10 +151,10 @@ public class ProductController : ControllerBase
 
         if (affectedRowsCount == 0)
         {
-            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            base.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
             return;
         }
 
-        context.Response.StatusCode = (int)HttpStatusCode.OK;
+        base.HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
     }
 }
