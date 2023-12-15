@@ -1,6 +1,11 @@
+using AkhshamBazari.Repositories;
+using AkhshamBazari.Repositories.Base;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSingleton<IProductRepository, ProductRepository>();
 
 var app = builder.Build();
 

@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Create new Product";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<a href="http://localhost:8080/Product">Home</a>
+
+<form method="post" action="/Product">
+  <div class="mb-3">
+    <label for="name" class="form-label">Name</label>
+    <input type="text" class="form-control" id="name" name="name">
+  </div>
+  <div class="mb-3">
+    <label for="price" class="form-label">Price</label>
+    <input type="number" class="form-control" id="price" name="price">
+  </div>
+  <button type="submit" class="btn btn-success">Create</button>
+</form>
