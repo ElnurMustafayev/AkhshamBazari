@@ -1,31 +1,17 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using AkhshamBazari.Models;
+﻿namespace AkhshamBazari.Controllers;
 
-namespace AkhshamBazari.Controllers;
+using Microsoft.AspNetCore.Mvc;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
     public IActionResult Index()
     {
         return View();
     }
 
-    public IActionResult Privacy()
+    [Route("/[controller]/[action]/{statusCode}")]    
+    public IActionResult Error(int statusCode)
     {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return base.Ok($"Status code: {statusCode}!");
     }
 }

@@ -5,7 +5,6 @@ using AkhshamBazari.Models;
 using AkhshamBazari.Repositories.Base;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("/[controller]")]
 public class ProductController : Controller
 {
     private readonly IProductRepository productRepository;
@@ -14,9 +13,7 @@ public class ProductController : Controller
         this.productRepository = productRepository;
     }
 
-    [HttpGet]
-    [ActionName("Index")]
-    public async Task<IActionResult> ShowAll()
+    public async Task<IActionResult> Index()
     {
         var products = await this.productRepository.GetAllAsync();
 
@@ -24,7 +21,6 @@ public class ProductController : Controller
     }
 
     [HttpGet]
-    [Route("[action]")]
     public IActionResult Create() {
         return View();
     }
