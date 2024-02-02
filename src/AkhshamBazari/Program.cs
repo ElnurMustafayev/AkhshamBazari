@@ -1,6 +1,8 @@
 using AkhshamBazari.Data;
 using AkhshamBazari.Repositories;
 using AkhshamBazari.Repositories.Base;
+using AkhshamBazari.Services;
+using AkhshamBazari.Services.Base;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +24,7 @@ builder.Services.AddDbContext<AkhshamBazariDbContext>(options => {
 });
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
