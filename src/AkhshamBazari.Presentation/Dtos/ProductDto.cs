@@ -1,4 +1,4 @@
-namespace AkhshamBazari.Dtos;
+namespace AkhshamBazari.Presentation.Dtos;
 
 public class ProductDto
 {

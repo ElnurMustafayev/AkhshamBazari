@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace AkhshamBazari.Migrations
+namespace AkhshamBazari.Presentation.Migrations
 {
     /// <inheritdoc />
     public partial class AddProducts : Migration

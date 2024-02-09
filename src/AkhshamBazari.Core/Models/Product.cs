@@ -1,4 +1,4 @@
-namespace AkhshamBazari.Models;
+namespace AkhshamBazari.Core.Models;
 
 public class Product {
     public int Id { get; set; }

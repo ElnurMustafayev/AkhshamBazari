@@ -1,8 +1,9 @@
-namespace AkhshamBazari.Controllers;
+namespace AkhshamBazari.Presentation.Controllers;
 
-using AkhshamBazari.Dtos;
-using AkhshamBazari.Repositories.Base;
-using AkhshamBazari.Services.Base;
+using AkhshamBazari.Core.Models;
+using AkhshamBazari.Core.Repositories;
+using AkhshamBazari.Core.Services.Base;
+using AkhshamBazari.Presentation.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 public class ProductController : Controller
@@ -31,7 +32,12 @@ public class ProductController : Controller
     [HttpPost]
     public async Task<IActionResult> Create([FromForm]ProductDto dto) {
         try {
-            await this.productService.AddNewProductAsync(dto);
+            var newProduct = new Product {
+                Name = dto.Name,
+                Price = dto.Price,
+            };
+
+            await this.productService.AddNewProductAsync(newProduct);
 
             return RedirectToAction("Index");
         }

@@ -1,8 +1,10 @@
-using AkhshamBazari.Data;
-using AkhshamBazari.Repositories;
-using AkhshamBazari.Repositories.Base;
-using AkhshamBazari.Services;
-using AkhshamBazari.Services.Base;
+using System.Reflection;
+using AkhshamBazari.Core.Models;
+using AkhshamBazari.Core.Repositories;
+using AkhshamBazari.Core.Services.Base;
+using AkhshamBazari.Infrastructure.Data;
+using AkhshamBazari.Infrastructure.Repositories;
+using AkhshamBazari.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +22,11 @@ builder.Services.AddDbContext<AkhshamBazariDbContext>(options => {
         #pragma warning restore 
     }
 
-    options.UseSqlServer(connectionString);
+    //options.UseSqlServer(connectionString);
+
+    options.UseSqlServer(connectionString, useSqlOptions => {
+        useSqlOptions.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name);
+    });
 });
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AkhshamBazari.Infrastructure\AkhshamBazari.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.15">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

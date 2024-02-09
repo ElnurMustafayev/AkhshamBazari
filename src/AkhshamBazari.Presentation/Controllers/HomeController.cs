@@ -1,4 +1,4 @@
-﻿namespace AkhshamBazari.Controllers;
+﻿namespace AkhshamBazari.Presentation.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
 

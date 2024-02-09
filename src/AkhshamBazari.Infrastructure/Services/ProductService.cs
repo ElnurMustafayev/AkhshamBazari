@@ -1,10 +1,9 @@
-namespace AkhshamBazari.Services;
+namespace AkhshamBazari.Infrastructure.Services;
 
 using System.Threading.Tasks;
-using AkhshamBazari.Dtos;
-using AkhshamBazari.Models;
-using AkhshamBazari.Repositories.Base;
-using AkhshamBazari.Services.Base;
+using AkhshamBazari.Core.Models;
+using AkhshamBazari.Core.Repositories;
+using AkhshamBazari.Core.Services.Base;
 
 public class ProductService : IProductService
 {
@@ -15,13 +14,8 @@ public class ProductService : IProductService
         this.productRepository = productRepository;
     }
 
-    public async Task AddNewProductAsync(ProductDto productDto)
+    public async Task AddNewProductAsync(Product product)
     {
-        var product = new Product {
-            Name = productDto.Name,
-            Price = productDto.Price,
-        };
-
         if(product.Price < 0) {
             throw new ArgumentException("Price can not be less than 0!");
         }
