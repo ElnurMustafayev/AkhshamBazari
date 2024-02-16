@@ -1,9 +1,10 @@
-namespace AkhshamBazari.Infrastructure.Services;
+namespace AkhshamBazari.Infrastructure.Data.Products.Services;
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using AkhshamBazari.Core.Models;
-using AkhshamBazari.Core.Repositories;
-using AkhshamBazari.Core.Services.Base;
+using AkhshamBazari.Core.Data.Products.Models;
+using AkhshamBazari.Core.Data.Products.Repositories;
+using AkhshamBazari.Core.Data.Products.Services;
 
 public class ProductService : IProductService
 {
@@ -25,5 +26,15 @@ public class ProductService : IProductService
         }
 
         await this.productRepository.InsertProductAsync(product);
+    }
+
+    public async Task<IEnumerable<Product>?> GetAllProductsAsync()
+    {
+        var result = await this.productRepository.GetAllAsync();
+
+        if(result == null || result.Any() == false)
+            return null;
+
+        return result;
     }
 }

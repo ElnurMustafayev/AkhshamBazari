@@ -1,6 +1,6 @@
-namespace AkhshamBazari.Core.Repositories;
+namespace AkhshamBazari.Core.Data.Products.Repositories;
 
-using AkhshamBazari.Core.Models;
+using AkhshamBazari.Core.Data.Products.Models;
 
 public interface IProductRepository
 {

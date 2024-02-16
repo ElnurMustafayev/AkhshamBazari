@@ -1,7 +1,7 @@
-namespace AkhshamBazari.Core.Models;
+namespace AkhshamBazari.Core.Data.Products.Models;
 
 public class Product {
     public int Id { get; set; }
-    public decimal? Price { get; set; }
+    public double? Price { get; set; }
     public string? Name { get; set; }
 }

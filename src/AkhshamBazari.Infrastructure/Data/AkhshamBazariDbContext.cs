@@ -2,7 +2,7 @@
 
 namespace AkhshamBazari.Infrastructure.Data;
 
-using AkhshamBazari.Core.Models;
+using AkhshamBazari.Core.Data.Products.Models;
 using Microsoft.EntityFrameworkCore;
 
 public class AkhshamBazariDbContext : DbContext {

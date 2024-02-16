@@ -1,9 +1,9 @@
-namespace AkhshamBazari.Infrastructure.Repositories;
+namespace AkhshamBazari.Infrastructure.Data.Products.Repositories;
 
-using AkhshamBazari.Core.Models;
 using Microsoft.EntityFrameworkCore;
-using AkhshamBazari.Core.Repositories;
 using AkhshamBazari.Infrastructure.Data;
+using AkhshamBazari.Core.Data.Products.Repositories;
+using AkhshamBazari.Core.Data.Products.Models;
 
 public class ProductRepository : IProductRepository
 {

@@ -1,10 +1,9 @@
 using System.Reflection;
-using AkhshamBazari.Core.Models;
-using AkhshamBazari.Core.Repositories;
-using AkhshamBazari.Core.Services.Base;
+using AkhshamBazari.Core.Data.Products.Repositories;
+using AkhshamBazari.Core.Data.Products.Services;
 using AkhshamBazari.Infrastructure.Data;
-using AkhshamBazari.Infrastructure.Repositories;
-using AkhshamBazari.Infrastructure.Services;
+using AkhshamBazari.Infrastructure.Data.Products.Repositories;
+using AkhshamBazari.Infrastructure.Data.Products.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

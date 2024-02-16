@@ -1,8 +1,8 @@
 namespace AkhshamBazari.Presentation.Controllers;
 
-using AkhshamBazari.Core.Models;
-using AkhshamBazari.Core.Repositories;
-using AkhshamBazari.Core.Services.Base;
+using AkhshamBazari.Core.Data.Products.Models;
+using AkhshamBazari.Core.Data.Products.Repositories;
+using AkhshamBazari.Core.Data.Products.Services;
 using AkhshamBazari.Presentation.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,7 +44,7 @@ public class ProductController : Controller
         catch(ArgumentException ex) {
             return base.BadRequest(ex.Message);
         }
-        catch(Exception ex) {
+        catch {
             // this.logger.Add(ex);
 
             return base.StatusCode(500, "Something went wrong!");
