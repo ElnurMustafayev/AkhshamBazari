@@ -2,24 +2,23 @@ namespace AkhshamBazari.Presentation.Controllers;
 
 using AkhshamBazari.Core.Data.Products.Models;
 using AkhshamBazari.Core.Data.Products.Repositories;
-using AkhshamBazari.Core.Data.Products.Services;
+using AkhshamBazari.Infrastructure.Data.Products.Commands;
 using AkhshamBazari.Presentation.Dtos;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 public class ProductController : Controller
 {
-    private readonly IProductRepository productRepository;
-    private readonly IProductService productService;
+    private readonly ISender sender;
 
-    public ProductController(IProductRepository productRepository,
-    IProductService productService) {
-        this.productRepository = productRepository;
-        this.productService = productService;
+    public ProductController(ISender sender) {
+        this.sender = sender;
     }
 
     public async Task<IActionResult> Index()
     {
-        var products = await this.productRepository.GetAllAsync();
+        var products = await this.sender.Send(new GetAllCommand());
+        //var products = await this.productRepository.GetAllAsync();
 
         return View(model: products);
     }
@@ -32,12 +31,12 @@ public class ProductController : Controller
     [HttpPost]
     public async Task<IActionResult> Create([FromForm]ProductDto dto) {
         try {
-            var newProduct = new Product {
+            var newProductCommand = new AddNewCommand {
                 Name = dto.Name,
                 Price = dto.Price,
             };
 
-            await this.productService.AddNewProductAsync(newProduct);
+            await this.sender.Send(newProductCommand);
 
             return RedirectToAction("Index");
         }

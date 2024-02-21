@@ -1,10 +1,10 @@
 using System.Reflection;
 using AkhshamBazari.Core.Data.Products.Repositories;
-using AkhshamBazari.Core.Data.Products.Services;
 using AkhshamBazari.Infrastructure.Data;
 using AkhshamBazari.Infrastructure.Data.Products.Repositories;
-using AkhshamBazari.Infrastructure.Data.Products.Services;
 using Microsoft.EntityFrameworkCore;
+
+var infrastructureAssembly = typeof(AkhshamBazariDbContext).Assembly;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +29,10 @@ builder.Services.AddDbContext<AkhshamBazariDbContext>(options => {
 });
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductService, ProductService>();
+
+builder.Services.AddMediatR(configurations => {
+    configurations.RegisterServicesFromAssembly(infrastructureAssembly);
+});
 
 var app = builder.Build();
 

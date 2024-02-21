@@ -22,7 +22,7 @@ namespace AkhshamBazari.Presentation.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AkhshamBazari.Core.Models.Product", b =>
+            modelBuilder.Entity("AkhshamBazari.Core.Data.Products.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,8 +33,8 @@ namespace AkhshamBazari.Presentation.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double?>("Price")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 

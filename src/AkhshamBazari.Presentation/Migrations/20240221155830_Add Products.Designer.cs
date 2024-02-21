@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AkhshamBazari.Presentation.Migrations
 {
     [DbContext(typeof(AkhshamBazariDbContext))]
-    [Migration("20240209162654_Add Products")]
+    [Migration("20240221155830_Add Products")]
     partial class AddProducts
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace AkhshamBazari.Presentation.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AkhshamBazari.Core.Models.Product", b =>
+            modelBuilder.Entity("AkhshamBazari.Core.Data.Products.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -36,8 +36,8 @@ namespace AkhshamBazari.Presentation.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double?>("Price")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
