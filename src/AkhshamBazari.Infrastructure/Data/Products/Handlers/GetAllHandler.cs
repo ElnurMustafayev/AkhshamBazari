@@ -21,7 +21,7 @@ public class GetAllHandler : IRequestHandler<GetAllCommand, IEnumerable<Product>
         var result = await this.productRepository.GetAllAsync();
 
         if(result is null || result.Any() == false) {
-            return null;
+            return Enumerable.Empty<Product>();
         }
 
         return result;

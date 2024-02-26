@@ -40,17 +40,17 @@ public class GetAllHandlerTest
 
 
     [Fact]
-    public async Task Handle_IfEmpty_ReturnsNull()
+    public async Task Handle_IfRepoReturnsEmptyOrNull_ReturnsEmpty()
     {
         var productRepositoryMock = new Mock<IProductRepository>();
 
         productRepositoryMock.Setup(repository => repository.GetAllAsync())
-            .ReturnsAsync(Enumerable.Empty<Product>());
+            .ReturnsAsync(value: null);
 
         var handler = new GetAllHandler(productRepositoryMock.Object);
 
         var result = await handler.Handle(new GetAllCommand(), CancellationToken.None);
 
-        Assert.Null(result);
+        Assert.NotNull(result);
     }
 }

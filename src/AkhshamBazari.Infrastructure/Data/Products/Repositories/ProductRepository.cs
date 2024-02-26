@@ -14,7 +14,7 @@ public class ProductRepository : IProductRepository
         this.dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Product>> GetAllAsync()
+    public async Task<IEnumerable<Product>?> GetAllAsync()
     {
         return await this.dbContext.Products.ToListAsync();
     }
